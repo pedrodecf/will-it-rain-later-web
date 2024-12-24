@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { DataTableType } from "./schema"
+import { ForecastTableType } from "./schema"
 import { getWeatherIcon } from "@/lib/getWeatherIcon"
 import { getWeatherCondition } from "@/lib/getWeatherCondition"
 
-export const columns: ColumnDef<DataTableType>[] = [
+export const forecastTableColumns: ColumnDef<ForecastTableType>[] = [
    {
       accessorKey: "date",
       header: "Date",

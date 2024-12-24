@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const dataTableSchema = z.object({
+export const forescastTableSchema = z.object({
    date: z.string(),
    minMax: z.string(),
    average: z.string(),
@@ -9,4 +9,4 @@ export const dataTableSchema = z.object({
    raintime: z.string().optional().nullable(),
 })
 
-export type DataTableType = z.infer<typeof dataTableSchema>;
+export type ForecastTableType = z.infer<typeof forescastTableSchema>;

@@ -19,12 +19,16 @@ interface DataTableProps<TData, TValue> {
    columns: ColumnDef<TData, TValue>[]
    data: TData[]
    className?: string
+   headerClassName?: string
+   rowClassName?: string
 }
 
 export function DataTable<TData, TValue>({
    columns,
    data,
    className,
+   headerClassName,
+   rowClassName,
 }: DataTableProps<TData, TValue>) {
    const table = useReactTable({
       data,
@@ -40,7 +44,7 @@ export function DataTable<TData, TValue>({
                   <TableRow key={headerGroup.id}>
                      {headerGroup.headers.map((header) => {
                         return (
-                           <TableHead key={header.id} className="text-center font-bold bg-[#F7F7F7]">
+                           <TableHead key={header.id} className={cn("text-center font-bold bg-[#F7F7F7]", headerClassName)}>
                               {header.isPlaceholder
                                  ? null
                                  : flexRender(
@@ -62,7 +66,7 @@ export function DataTable<TData, TValue>({
                         className="hover:bg-inherit"
                      >
                         {row.getVisibleCells().map((cell) => (
-                           <TableCell key={cell.id} className="py-4">
+                           <TableCell key={cell.id} className={cn("py-4", rowClassName)}>
                               {flexRender(cell.column.columnDef.cell, cell.getContext())}
                            </TableCell>
                         ))}

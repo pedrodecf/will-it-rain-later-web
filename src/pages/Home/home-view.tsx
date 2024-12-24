@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { AiButton } from "@/components/ai-button";
 import { addDays } from "date-fns"
 import { CityCombobox } from "@/components/city-combobox";
-import { DataTable } from "@/components/ui/table/data-table";
-import { columns } from "@/components/ui/table/columns";
-import { DataTableType } from "@/components/ui/table/schema";
+import { DataTable } from "@/components/ui/data-table";
+import { forecastTableColumns } from "@/components/ui/forecast-table/columns";
+import { ForecastTableType } from "@/components/ui/forecast-table/schema";
+import { HistoryTableType } from "@/components/ui/history-table/schema";
+import { historyTableColumns } from "@/components/ui/history-table/columns";
 
 type THomeView = {
    formMethods: UseFormReturn<SearchInputType, unknown, SearchOutputType>
@@ -19,7 +21,7 @@ type THomeView = {
 
 export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
 
-   const data: DataTableType[] = [
+   const data: ForecastTableType[] = [
       {
          date: "2021-10-01",
          minMax: "22°C / 30°C",
@@ -37,12 +39,41 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
       },
    ]
 
+   const otherData: HistoryTableType[] = [
+      {
+         year: "2020",
+         average: "25°C",
+         weather: "sunny",
+         bmIndex: "3",
+         flightPrice: "R$ 500",
+      },
+      {
+         year: "2019",
+         average: "24°C",
+         weather: "thunderstorm",
+         bmIndex: "2",
+         flightPrice: "R$ 450",
+      },
+   ]
+
    return (
       <div className="min-h-screen h-full flex items-center justify-center bg-background">
          <div className="container max-w-[1024px] text-center flex flex-col">
             {getHero()}
             {getSearchForm()}
-            <DataTable className="mt-12" columns={columns} data={data} />
+            <DataTable
+               className="mt-12"
+               headerClassName="bg-[#D9D9D9] text-primary py-4"
+               columns={forecastTableColumns}
+               data={data}
+            />
+            <DataTable
+               className="mt-4"
+               headerClassName="py-4"
+               rowClassName="text-primary text-base"
+               columns={historyTableColumns}
+               data={otherData}
+            />
          </div>
       </div>
    )
