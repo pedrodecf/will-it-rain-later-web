@@ -1,5 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableType } from "./schema"
+import { getWeatherIcon } from "@/lib/getWeatherIcon"
+import { getWeatherCondition } from "@/lib/getWeatherCondition"
 
 export const columns: ColumnDef<DataTableType>[] = [
    {
@@ -14,11 +16,12 @@ export const columns: ColumnDef<DataTableType>[] = [
       accessorKey: "average",
       header: "Average (°C)",
       cell: ({ row }) => {
-         const { avatar, celsius } = row.original.average
+         const { average } = row.original
+         const { weather } = row.original
          return (
             <div className="flex items-center gap-2 justify-center">
-               <img src={avatar} alt="Weather icon" width={24} height={24} />
-               <span>{celsius}</span>
+               <img src={getWeatherIcon(weather)} alt="Weather icon" width={24} height={24} />
+               <span>{average}</span>
             </div>
          )
       },
@@ -26,6 +29,12 @@ export const columns: ColumnDef<DataTableType>[] = [
    {
       accessorKey: "weather",
       header: "Weather condition",
+      cell: ({ row }) => {
+         const { weather } = row.original
+         return (
+            <span>{getWeatherCondition(weather)}</span>
+         )
+      }
    },
    {
       accessorKey: "rained",

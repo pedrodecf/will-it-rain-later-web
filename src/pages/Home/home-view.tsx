@@ -23,21 +23,15 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
       {
          date: "2021-10-01",
          minMax: "22°C / 30°C",
-         average: {
-            avatar: "https://www.weatherbit.io/static/img/icons/r01d.png",
-            celsius: "26°C"
-         },
-         weather: "Mostly Sunny",
+         average: "26°C",
+         weather: "sunny",
          rained: false,
       },
       {
          date: "2021-10-02",
          minMax: "23°C / 29°C",
-         average: {
-            avatar: "https://www.weatherbit.io/static/img/icons/r01d.png",
-            celsius: "24°C"
-         },
-         weather: "Mostly Sunny",
+         average: "24°C",
+         weather: "cloudy",
          rained: true,
          raintime: "10:00 - 11:00"
       },
