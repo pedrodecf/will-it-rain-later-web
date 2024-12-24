@@ -6,6 +6,7 @@ import { Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AiButton } from "@/components/ai-button";
 import { addDays } from "date-fns"
+import { CityCombobox } from "@/components/city-combobox";
 
 type THomeView = {
    formMethods: UseFormReturn<SearchInputType, unknown, SearchOutputType>
@@ -47,14 +48,15 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
          <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-row gap-2 mt-12 items-center justify-center w-full ">
-            <Input
-               name='city'
+            <CityCombobox
+               countryCode="BR"
+               name="city"
                control={control}
                helperText={errors.city?.message}
-               placeholder="What is your destination?"
                iconStart={Plane}
                iconClassName="text-muted-foreground"
                className="max-w-96 "
+               placeholder="What is your destination?"
             />
             <DatePicker
                name="startDate"
