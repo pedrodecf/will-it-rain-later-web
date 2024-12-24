@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { SearchInputType, SearchOutputType, SearchType } from "./schema";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -7,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { AiButton } from "@/components/ai-button";
 import { addDays } from "date-fns"
 import { CityCombobox } from "@/components/city-combobox";
+import { DataTable } from "@/components/ui/table/data-table";
+import { columns } from "@/components/ui/table/columns";
+import { DataTableType } from "@/components/ui/table/schema";
 
 type THomeView = {
    formMethods: UseFormReturn<SearchInputType, unknown, SearchOutputType>
@@ -16,11 +18,37 @@ type THomeView = {
 }
 
 export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
+
+   const data: DataTableType[] = [
+      {
+         date: "2021-10-01",
+         minMax: "22°C / 30°C",
+         average: {
+            avatar: "https://www.weatherbit.io/static/img/icons/r01d.png",
+            celsius: "26°C"
+         },
+         weather: "Mostly Sunny",
+         rained: false,
+      },
+      {
+         date: "2021-10-02",
+         minMax: "23°C / 29°C",
+         average: {
+            avatar: "https://www.weatherbit.io/static/img/icons/r01d.png",
+            celsius: "24°C"
+         },
+         weather: "Mostly Sunny",
+         rained: true,
+         raintime: "10:00 - 11:00"
+      },
+   ]
+
    return (
       <div className="min-h-screen h-full flex items-center justify-center bg-background">
-         <div className="container text-center flex flex-col">
+         <div className="container max-w-[1024px] text-center flex flex-col">
             {getHero()}
             {getSearchForm()}
+            <DataTable className="mt-12" columns={columns} data={data} />
          </div>
       </div>
    )

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { City } from "country-state-city";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import {
    Command,
    CommandEmpty,
@@ -45,10 +45,30 @@ export function CityCombobox<T extends FieldValues>({
    ...props
 }: CityComboboxProps<T>) {
    const [open, setOpen] = React.useState(false);
+   const [isLoading, setIsLoading] = React.useState(false);
+   const [cityList, setCityList] = React.useState<
+      { key: string; name: string }[]
+   >([]);
    const inputId = React.useId();
-   const allCities = React.useMemo(() => City.getCitiesOfCountry(countryCode) || [], [countryCode]);
-   const cityNames = allCities.map((city) => city.name);
+
    const hasError = helperText && helperText.length > 0;
+
+   const handleOpenChange = (nextOpen: boolean) => {
+      setOpen(nextOpen);
+      if (nextOpen) {
+         setIsLoading(true);
+         setCityList([]);
+         setTimeout(() => {
+            const allCities = City.getCitiesOfCountry(countryCode) || [];
+            const data = allCities.map((city) => ({
+               key: `${city.name}-${city.latitude}-${city.longitude}`,
+               name: city.name,
+            }));
+            setCityList(data);
+            setIsLoading(false);
+         });
+      }
+   };
 
    return (
       <div className={cn("flex flex-col gap-2 w-full relative", className)}>
@@ -57,12 +77,13 @@ export function CityCombobox<T extends FieldValues>({
                <Label htmlFor={inputId}>{label}</Label>
             </div>
          )}
+
          <div className="flex items-center gap-2">
             <Controller
                name={name}
                control={control}
                render={({ field: { value, onChange } }) => (
-                  <Popover open={open} onOpenChange={setOpen}>
+                  <Popover open={open} onOpenChange={handleOpenChange}>
                      <PopoverTrigger asChild>
                         <div className="relative w-full">
                            {IconStart && (
@@ -83,10 +104,13 @@ export function CityCombobox<T extends FieldValues>({
                                  IconStart && "pl-10",
                                  IconEnd && "pr-10"
                               )}
-                              onClick={() => setOpen(!open)}
                               {...props}
                            >
-                              {value ? value : (<span className="text-muted-foreground">{placeholder}</span>)}
+                              {value ? (
+                                 value
+                              ) : (
+                                 <span className="text-muted-foreground">{placeholder}</span>
+                              )}
                               <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
                            </button>
                            {IconEnd && (
@@ -99,30 +123,43 @@ export function CityCombobox<T extends FieldValues>({
                            )}
                         </div>
                      </PopoverTrigger>
+
                      <PopoverContent className="p-0 w-full">
                         <Command>
-                           <CommandInput placeholder="Digite para filtrar cidades..." />
+                           <CommandInput placeholder="Type to filter cities..." />
                            <CommandList>
-                              <CommandEmpty>Nenhuma cidade encontrada.</CommandEmpty>
-                              <CommandGroup>
-                                 {cityNames.map((cityName) => (
-                                    <CommandItem
-                                       key={cityName}
-                                       onSelect={() => {
-                                          onChange(cityName);
-                                          setOpen(false);
-                                       }}
-                                    >
-                                       {cityName}
-                                       <Check
-                                          className={cn(
-                                             "ml-auto h-4 w-4",
-                                             value === cityName ? "opacity-100" : "opacity-0"
-                                          )}
-                                       />
-                                    </CommandItem>
-                                 ))}
-                              </CommandGroup>
+                              {isLoading && (
+                                 <div className="flex items-center justify-center p-4">
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin text-muted-foreground" />
+                                    <span className="text-muted-foreground">Loading...</span>
+                                 </div>
+                              )}
+                              {!isLoading && (
+                                 <>
+                                    <CommandEmpty>No cities found</CommandEmpty>
+                                    <CommandGroup>
+                                       {cityList.map(({ key, name: cityName }) => (
+                                          <CommandItem
+                                             key={key}
+                                             onSelect={() => {
+                                                onChange(cityName);
+                                                setOpen(false);
+                                             }}
+                                          >
+                                             {cityName}
+                                             <Check
+                                                className={cn(
+                                                   "ml-auto h-4 w-4",
+                                                   value === cityName
+                                                      ? "opacity-100"
+                                                      : "opacity-0"
+                                                )}
+                                             />
+                                          </CommandItem>
+                                       ))}
+                                    </CommandGroup>
+                                 </>
+                              )}
                            </CommandList>
                         </Command>
                      </PopoverContent>
@@ -130,6 +167,7 @@ export function CityCombobox<T extends FieldValues>({
                )}
             />
          </div>
+
          {hasError && (
             <p className="text-xs text-chart-5 font-normal absolute -bottom-8 left-1/2 -translate-x-1/2 -translate-y-1/2">
                {helperText}
