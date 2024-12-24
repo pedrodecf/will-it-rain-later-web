@@ -46,6 +46,23 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
          weather: "sunny",
          bmIndex: "3",
          flightPrice: "R$ 500",
+         history: [
+            {
+               date: "2020-10-01",
+               minMax: "22°C / 30°C",
+               average: "26°C",
+               weather: "sunny",
+               rained: false,
+            },
+            {
+               date: "2020-10-02",
+               minMax: "23°C / 29°C",
+               average: "24°C",
+               weather: "cloudy",
+               rained: true,
+               raintime: "10:00 - 11:00"
+            },
+         ]
       },
       {
          year: "2019",
@@ -53,6 +70,23 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
          weather: "thunderstorm",
          bmIndex: "2",
          flightPrice: "R$ 450",
+         history: [
+            {
+               date: "2019-10-01",
+               minMax: "22°C / 30°C",
+               average: "26°C",
+               weather: "sunny",
+               rained: false,
+            },
+            {
+               date: "2019-10-02",
+               minMax: "23°C / 29°C",
+               average: "24°C",
+               weather: "cloudy",
+               rained: true,
+               raintime: "10:00 - 11:00"
+            },
+         ]
       },
    ]
 

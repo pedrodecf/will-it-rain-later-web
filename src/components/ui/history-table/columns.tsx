@@ -2,10 +2,27 @@ import { ColumnDef } from "@tanstack/react-table";
 import { HistoryTableType } from "./schema";
 import { getWeatherIcon } from "@/lib/getWeatherIcon";
 import { getWeatherCondition } from "@/lib/getWeatherCondition";
-import { CircleHelp } from "lucide-react";
+import { ChevronRight, CircleHelp } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../tooltip";
 
 export const historyTableColumns: ColumnDef<HistoryTableType>[] = [
+   {
+      id: "expander",
+      header: () => null,
+      cell: ({ row }) => (
+         <button
+            onClick={() => row.toggleExpanded?.()}
+         >
+            <ChevronRight
+               size={16}
+               className={row.getIsExpanded?.() ?
+                  "transition-transform duration-300 rotate-90"
+                  : "transition-transform duration-300"
+               }
+            />
+         </button>
+      ),
+   },
    {
       accessorKey: "year",
       header: "Year",

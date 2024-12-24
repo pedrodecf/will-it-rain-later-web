@@ -60,4 +60,15 @@ export const forecastTableColumns: ColumnDef<ForecastTableType>[] = [
             : "-"
       }
    },
+   {
+      accessorKey: "",
+      header: "Day",
+      cell: ({ row }) => {
+         const { date } = row.original
+         const day = new Date(date).toLocaleDateString("en-US", { weekday: "long" })
+         return (
+            <span>{day}</span>
+         )
+      },
+   },
 ]
