@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form"
 import { HomeView } from "./home-view"
-import { SearchInputType, SearchOutputType, searchSchema, SearchType } from "./schema"
+import { ResponseWeatherType, SearchInputType, SearchOutputType, searchSchema, SearchType } from "./schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query";
 import { SearchGateway } from "@/gateways";
@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export const HomeService = () => {
    const searchGateway = new SearchGateway(Api)
-   const [response, setResponse] = useState<any | null>(null);
+   const [response, setResponse] = useState<ResponseWeatherType>();
    const formMethods = useForm<
       SearchInputType,
       unknown,

@@ -1,9 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { ForecastTableType } from "./schema"
 import { getWeatherIcon } from "@/lib/getWeatherIcon"
 import { getWeatherCondition } from "@/lib/getWeatherCondition"
+import { ResponseWeatherType } from "@/pages/Home/schema"
 
-export const forecastTableColumns: ColumnDef<ForecastTableType>[] = [
+export type ForecastItem = ResponseWeatherType['forecast'][number];
+
+export const forecastTableColumns: ColumnDef<ForecastItem>[] = [
    {
       accessorKey: "date",
       header: "Date",
@@ -16,8 +18,7 @@ export const forecastTableColumns: ColumnDef<ForecastTableType>[] = [
       accessorKey: "average",
       header: "Average (°C)",
       cell: ({ row }) => {
-         const { average } = row.original
-         const { weather } = row.original
+         const { average, weather } = row.original
          return (
             <div className="flex items-center gap-2 justify-center">
                <img src={getWeatherIcon(weather)} alt="Weather icon" width={24} height={24} />
@@ -61,7 +62,7 @@ export const forecastTableColumns: ColumnDef<ForecastTableType>[] = [
       }
    },
    {
-      accessorKey: "",
+      accessorKey: "day",
       header: "Day",
       cell: ({ row }) => {
          const { date } = row.original
