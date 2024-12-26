@@ -32,7 +32,7 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
 
    return (
       <div className="min-h-screen h-full flex items-center justify-center bg-background">
-         <div className="container max-w-[1024px] text-center flex flex-col">
+         <div className="container max-w-[1024px] text-center flex flex-col py-12">
             {getHero()}
             {getSearchForm()}
             <DataTable
