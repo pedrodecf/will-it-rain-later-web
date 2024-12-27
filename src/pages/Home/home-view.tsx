@@ -1,7 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { ResponseWeatherType, SearchInputType, SearchOutputType, SearchType } from "./schema";
 import { DatePicker } from "@/components/ui/date-picker";
-import { Plane } from "lucide-react";
+import { Plane, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AiButton } from "@/components/ai-button";
 import { addDays } from "date-fns";
@@ -9,8 +9,9 @@ import { CityCombobox } from "@/components/city-combobox";
 import { DataTable } from "@/components/ui/data-table";
 import { ForecastItem, forecastTableColumns } from "@/components/ui/forecast-table/columns";
 import { YearItem } from "@/components/ui/history-table/year-columns";
-import { getDataMock } from "./api-respose-mock";
+import { getDataMock } from "../../lib/api-respose-mock";
 import { YearsTable } from "@/components/years-table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type THomeView = {
    formMethods: UseFormReturn<SearchInputType, unknown, SearchOutputType>
@@ -69,7 +70,13 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
          watch
       } = formMethods
 
+      const city = watch("city")
       const startDate = watch("startDate")
+      const endDate = watch("endDate")
+
+      function isInputsPopulated() {
+         if (city || startDate || endDate) return true
+      }
       return (
          <form
             onSubmit={handleSubmit(onSubmit)}
@@ -108,10 +115,35 @@ export const HomeView = ({ formMethods, onSubmit, isLoading }: THomeView) => {
             <Button
                type="submit"
                disabled={isLoading}
+               className="w-24"
             >
                Search
             </Button>
-         </form>
+            {
+               isInputsPopulated() && (
+                  <TooltipProvider delayDuration={0}>
+                     <Tooltip>
+                        <TooltipTrigger asChild>
+                           <Button
+                              type="button"
+                              variant='destructive'
+                              onClick={() => {
+                                 formMethods.reset()
+                              }}
+                           >
+                              <Trash size={16} />
+                           </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                           <p className="max-w-xs whitespace-pre-wrap break-words">
+                              Clear all fields
+                           </p>
+                        </TooltipContent>
+                     </Tooltip>
+                  </TooltipProvider>
+               )
+            }
+         </form >
       )
    }
 }

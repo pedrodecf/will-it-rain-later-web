@@ -1,4 +1,4 @@
-import { ResponseWeatherType } from "./schema"
+import { ResponseWeatherType } from "../pages/Home/schema"
 
 export function getDataMock() {
    const data: ResponseWeatherType[] = [
